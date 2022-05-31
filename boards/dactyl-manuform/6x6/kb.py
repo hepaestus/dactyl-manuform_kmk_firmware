@@ -19,12 +19,11 @@ coord_mapping = [
 ]
 
 from kmk.extensions.RGB import RGB
-from kb import rgb_pixel_pin # This can be imported or defined manually
 rgb_pixel_pin = board.D2 # DEFINED BY Pete
 
 rgb_ext = RGB(
     pixel_pin=rgb_pixel_pin,
-    num_pixels=48
+    num_pixels=24
     val_limit=100,
     hue_default=0,
     sat_default=100,
