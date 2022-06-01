@@ -1,4 +1,5 @@
 import board
+import neopixel
 
 from kmk.kmk_keyboard import KMKKeyboard as _KMKKeyboard
 from kmk.scanners import DiodeOrientation
@@ -17,6 +18,7 @@ coord_mapping = [
             30, 31, 32, 33,            68, 69, 70, 71,
                 34, 35, 36, 37,    72, 73, 74, 75,                      
 ]
+
 
 from kmk.extensions.RGB import RGB
 rgb_pixel_pin = board.D2 # DEFINED BY Pete

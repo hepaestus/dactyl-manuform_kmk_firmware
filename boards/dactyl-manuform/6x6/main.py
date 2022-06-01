@@ -1,4 +1,5 @@
 import board
+import neopixel
 
 from kb import KMKKeyboard
 
