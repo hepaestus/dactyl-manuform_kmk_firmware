@@ -1,15 +1,18 @@
+print("Starting...")
 import board
-import neopixel
+import neopixel 
 
-from adafruit_kb2040 import _KMKKeyboard
-
+from kb import _KMKKeyboard
 from kmk.keys import KC
 from kmk.modules.encoder import EncoderHandler
 from kmk.modules.layers import Layers
 from kmk.modules.split import Split, SplitType
-from kmk.extensions.rgb import RGB
+from kmk.extensions.RGB import RGB, AnimationModes                            
 
 keyboard = _KMKKeyboard()
+
+keyboard.debug_enabled = True
+
 rgb_pixel_pin = board.D2
 split_data_pin = board.D3
 
@@ -19,19 +22,19 @@ split = Split(
     split_flip=True,  # If both halves are the same, but flipped, set this True
     split_type=SplitType.UART,  # Defaults to UART
     uart_interval=20,  # Sets the uarts delay. Lower numbers draw more power
-    data_pin=split_data_pin,  # The primary data pin to talk to the secondary device with
-#    data_pin2=board.TX,  # Second uart pin to allow 2 way communication
+    data_pin=split_data_pin,  # The primary data pin to talk to the secondary device
+    # data_pin2=board.TX,  # Second uart pin to allow 2 way communication
     use_pio=True,  # allows for UART to be used with PIO
 )
 
 rgb_ext = RGB(
     pixel_pin=rgb_pixel_pin,
-    num_pixels=24
+    num_pixels=24,
     val_limit=100,
     hue_default=0,
     sat_default=100,
     rgb_order=(1, 0, 2),  # GRB WS2812
-    val_default=100,
+    val_default=50,
     hue_step=5,
     sat_step=5,
     val_step=5,
@@ -60,8 +63,8 @@ LOWER = KC.MO(1)
 RAISE = KC.MO(2)
 
 keyboard.keymap = [
-    [  # QWERTY
-#       # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
+    [ # QWERTY
+      # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
         KC.F1,    KC.F2,    KC.F3,    KC.F4,    KC.F5,    KC.F6,                                            KC.F7,    KC.F8,    KC.F9,    KC.F10,   KC.F11,   KC.F12,
         KC.ESC,   KC.N1,    KC.N2,    KC.N3,    KC.N4,    KC.N5,                                            KC.N6,    KC.N7,    KC.N8,    KC.N9,    KC.N0,    KC.MINS,
         KC.TAB,   KC.Q,     KC.W,     KC.E,     KC.R,     KC.T,                                             KC.Y,     KC.U,     KC.I,     KC.O,     KC.P,     KC.PIPE,
@@ -70,8 +73,8 @@ keyboard.keymap = [
                             KC.LCBR,  KC.RCBR,  KC.LCTL,  KC.ENT,                                           KC.SPC,   KC.RCTL,  KC.RGUI,  KC.EQL,
                                       LOWER,    KC.SPC,   KC.TAB,   KC.BSPC,                       KC.ENT,  KC.END,   KC.DEL,   KC.HOME,
     ],
-    [  #LOWER
-#        # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
+    [ # LOWER
+      # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
         KC.F1,     KC.F2,    KC.F3,   KC.F4,   KC.F5,   KC.F6,                                            KC.F7,    KC.F8,    KC.F9,    KC.F10,   KC.F11,   KC.F12,
         KC.ESC,    KC.N1,    KC.N2,   KC.N3,   KC.N4,   KC.N5,                                            KC.N6,    KC.N7,    KC.N8,    KC.N9,    KC.N0,    KC.MINS,
         KC.GRV,    KC.EXLM,  KC.AT,   KC.HASH, KC.DLR,  KC.PERC,                                          KC.CIRC,  KC.AMPR,  KC.ASTR,  KC.LPRN,  KC.RPRN,  KC.PIPE,
@@ -79,26 +82,19 @@ keyboard.keymap = [
                              XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                          XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
                                       KC.TAB,  KC.BSPC,   KC.END,   KC.DEL,                        KC.ENT,KC.END,   KC.DEL,   KC.HOME,
     ],
-    [  #RAISE
-#       # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
+    [ #RAISE
+      # HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----#ENCODER--#ENCODER--# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----# HERE----
         KC.F1,    KC.F2,    KC.F3,    KC.F4,    KC.F5,    KC.F6,                                            KC.F7,    KC.F8,    KC.F9,    KC.F10,   KC.F11,   KC.F12,
         KC.ESC,   KC.N1,    KC.N2,    KC.N3,    KC.N4,    KC.N5,                                            KC.N6,    KC.N7,    KC.N8,    KC.N9,    KC.N0,    KC.MINS,
         XXXXXXX,  KC.INS,   KC.PSCR,  KC.APP,   XXXXXXX,  XXXXXXX,                                          KC.PGUP,  BACK,     KC.UP,    NEXT,     LBSPC,    KC.BSPC,
         XXXXXXX,  KC.LALT,  KC.LCTL,  KC.LSFT,  XXXXXXX,  KC.CAPS,                                          KC.PGDN,  KC.LEFT,  KC.DOWN,  KC.RGHT,  KC.DEL,   KC.PIPE,
         XXXXXXX,  UNDO,     CUT,      COPY,     PASTE,    XXXXXXX,                                          XXXXXXX,  LSTRT,    XXXXXXX,  LEND,     XXXXXXX,  XXXXXXX,
                             XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                                          XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-                                      KC.TAB,  KC.BSPC,   KC.ENT,   KC.SPC                         KC.ENT,  KC.END,   KC.DEL, KC.BSPC
+                                    KC.TAB,KC.BSPC,   KC.ENT,   KC.SPC,                             KC.ENT, KC.END,   KC.DEL,   KC.BSPC,
     ]
 ]
 
-# encoder_handler = EncoderHandler()
-# encoder_handler.pins = ((keyboard.encoder_pin_1, keyboard.encoder_pin_0, None, False),)
-# encoder_handler.map = (
-#     ((KC.VOLD, KC.VOLU),),  # base layer
-#     ((KC.VOLD, KC.VOLU),),  # Raise
-#     ((KC.VOLD, KC.VOLU),),  # Lower
-# )
-# keyboard.modules.append(encoder_handler)
+print("Started!")
 
 if __name__ == '__main__':
     keyboard.go()
