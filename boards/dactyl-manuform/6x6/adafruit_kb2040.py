@@ -4,6 +4,8 @@ import neopixel
 from kmk.kmk_keyboard import KMKKeyboard as _KMKKeyboard
 from kmk.scanners import DiodeOrientation
 
+import adafruit_pioasm
+
 class KMKKeyboard(_KMKKeyboard):
     col_pins = (board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10)
     row_pins = (board.D3, board.D4, board.D5, board.D6,  board.D7,   board.D8,   board.D9)
