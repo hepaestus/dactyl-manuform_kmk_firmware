@@ -7,13 +7,7 @@ from kmk.scanners import DiodeOrientation
 class KMKKeyboard(_KMKKeyboard):
     col_pins = (board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10)
     row_pins = (board.D3, board.D4, board.D5, board.D6,  board.D7,   board.D8,   board.D9)
-
-    rgb_pixel_pin = board.D2 # DEFINED BY Build
-
     diode_orientation = DiodeOrientation.COL2ROW
-
-    split_data_pin = board.D3 # DEFINED BY Build
-
     coord_mapping = [
         0,  1,  2,  3,  4,  5,            38, 39, 40, 41, 42, 43,
         6,  7,  8,  9, 10, 11,            44, 45, 46, 47, 48, 49,
@@ -23,5 +17,3 @@ class KMKKeyboard(_KMKKeyboard):
                 30, 31, 32, 33,            68, 69, 70, 71,
                     34, 35, 36, 37,    72, 73, 74, 75,                      
     ]
-
-
