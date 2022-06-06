@@ -12,9 +12,11 @@ Mainly Finished Circa: 2022-06-06 :)
 - [x] Assemble the keyboard
 - [x] Programm the keyboard
 - [ ] Debug the Keyboard ( Current Status Debugging: 2022-06-06 :) )
+- [ ] Finish Base Assembly
 - [ ] Fix the program
 - [ ] Add Special Features
 - [ ] Get RGB Leds working
+- [ ] Rewire and Glue NeoPixels onto the backs of the switches
 - [ ] Learn to type on this new layout
 - [ ] Hone the layout to my needs
 - [ ] Use this keyboard regualrly as my daily driver
