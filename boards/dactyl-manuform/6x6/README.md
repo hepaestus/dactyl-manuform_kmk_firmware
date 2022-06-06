@@ -173,3 +173,23 @@ split_mod = Split(
     use_pio=True,  # allows for UART to be used with PIO
 )
 ```
+
+### Keyboard Left and Right Side Definitions
+When your CIRCUITPYTHON Drive is loaded. Goto the properties for the drive and change the Name of the drive to LEFT.
+Now plug in the right side of your keyboard and do the same on the CIRCUITPYHTON drive except this time name it RIGHT.
+
+Now the code below will load the correct SplitSide to the Split Module
+```python
+## Figure Out Which Side I am On from the Mount Point.
+name = str(getmount('/').label)
+print('Keyboard Left Or Right: {}'.format(name))
+if name == 'RIGHT':
+     # right
+     my_split_side=SplitSide.RIGHT
+elif name == 'LEFT': 
+     # left
+     my_split_side=SplitSide.LEFT,    
+else:
+    print('ERROR: UNKNOWN DRIVE Cannot tell if right or left keyboard side')
+```
+
