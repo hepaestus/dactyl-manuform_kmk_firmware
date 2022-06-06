@@ -1,7 +1,7 @@
 ##################################################################
 author='Pete Olsen III hepaestus@gmail.com https://hepaestus.com/'
 manufacturer='Olsen Design 06-2022'
-version = 'Version 1.0.10d'
+version = 'Version 1.0.11'
 ##################################################################
 print("Starting...")
 
