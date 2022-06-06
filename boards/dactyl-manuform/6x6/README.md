@@ -3,7 +3,7 @@
 ![Dactyl-Manuform M6x6 keyboard](images/dactyl_manuform_6x6_keyboard.jpg)
 My Translucent Red DM6x6 keyboard with NeoPixels backlights. (Better pic of the LEDs coming soon)
 
-Discussion
+Project Coding Discussion
 * [Discord Server](https://discord.gg/VtqKRwuec4)
 ## Parts
 ### Baseplate 3d Printed
@@ -23,15 +23,13 @@ Discussion
 
 ## Code
 
-### The Keyboard Class
-
+### The Custom Keyboard Class
 ```python
-## My Keyboard Class
+## My Custom Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
     # create and register the scanner
     def __init__(self):      
         # create and register the scanner
-      
         # Using Global variables as any null value passed, or not setting, causes errors in digitalio.py line 17
         #                            ROW PINS     COLUMN PINS  DIODES
         self.matrix = MatrixScanner( my_row_pins, my_col_pins, my_diode_orientation )
@@ -137,4 +135,41 @@ keyboard.keymap = [
                           _______, _______, _______, _______,     _______, _______, _______, _______,
     ],
 ]
+```
+### Module and Extensions
+#### Extensions
+RGB Extension Params
+
+```python
+rgb_ext = RGB(
+    pixel_pin=rgb_pixel_pin,
+    num_pixels=neopixels_per_side,
+    val_limit=100,
+    hue_default=100,
+    sat_default=100,
+    rgb_order=(1, 0, 2),  # GRB WS2812
+    val_default=50,
+    hue_step=5,
+    sat_step=5,
+    val_step=5,
+    animation_speed=1,
+    breathe_center=1,  # 1.0-2.7
+    knight_effect_length=3,
+    animation_mode=AnimationModes.STATIC,
+    reverse_animation=False,
+    refresh_rate=60
+)
+```
+### Modules
+Split Keyboard Module Params
+```python
+split_mod = Split(
+    split_side=my_split_side,   
+    split_flip=True, # If both halves are the same, but flipped, set this True
+    split_type=SplitType.UART,  # Defaults to UART
+    uart_interval=20,  # Sets the uarts delay. Lower numbers draw more power
+    data_pin=split_data_pin,  # The primary data pin to talk to the secondary device
+    #data_pin2=split_data_pin,  # Second uart pin to allow 2 way communication
+    use_pio=True,  # allows for UART to be used with PIO
+)
 ```
