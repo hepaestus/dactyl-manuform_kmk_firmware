@@ -1,18 +1,54 @@
 # Dactyl-Manuform 6x6
+<picture style="margin: auto; ">
+  <img src="images/dactyl_manuform_6x6_keyboard-small.jpg"/>
+</picture>
 
-![Dactyl-Manuform M6x6 keyboard](images/dactyl_manuform_6x6_keyboard.jpg)
-My Translucent Red DM6x6 keyboard with NeoPixels backlights. (Better pic of the LEDs coming soon)
+Translucent Red DM6x6 keyboard with NeoPixels backlights. (Better pic of the LEDs coming soon)
+
+Mainly Finished Circa: 2022-06-06 :)
+### Current Progress On This Project
+- [x] 3dPrint the Baseplate
+- [x] Get all other parts together
+- [x] Assemble the keyboard
+- [x] Programm the keyboard
+- [ ] Debug the Keyboard ( Current Status Debugging: 2022-06-06 :) )
+- [ ] Fix the program
+- [ ] Add Special Features
+- [ ] Get RGB Leds working
+- [ ] Learn to type on this new layout
+- [ ] Hone the layout to my needs
+- [ ] Use this keyboard regualrly as my daily driver
+
 
 Project Coding Discussion
 * [Discord Server](https://discord.gg/VtqKRwuec4)
+
+## The Build
+  
+### Images
+
+![left hand side printed](images/left_hand_side_printed-small.jpg)
+
+![installing switches](images/installing_switches-small.jpg)
+
+![buttons with dioeds installed](images/buttons_with_diodes_installed-small.jpg)
+
+![ready to wire for testing](images/ready_to_wire_the_board_for_testing-small.jpg)
+
+![final install guts](images/final_install_guts-small.jpg)
+
+
 ## Parts
 ### Baseplate 3d Printed
 * [Dactyl Manuform 6x6](https://thangs.com/designer/hepaestus/3d-model/Dactyl%20Manuform%206x6-75667)
 ### Microcontroller
 * [Adafruit KB2040](https://www.adafruit.com/product/5302)
+    * Make sure you install the latest [Adafruit CircuitPython](https://circuitpython.org/board/adafruit_kb2040/)
+
 ### Switches and Keycaps
 * [Adafruit MX Brown](https://www.adafruit.com/product/4954)
 * [Translucent MX Compatible Keycaps](https://www.adafruit.com/product/4956)
+
 ### Other Bits and Bobs
 * [Momentary Switch](https://www.amazon.com/dp/B09BKWMNJ9?)
 * [2 RJ9 Connectors](https://www.amazon.com/gp/product/B093Q46KBZ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
