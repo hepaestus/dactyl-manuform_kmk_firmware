@@ -1,37 +1,50 @@
 ##################################################################
 author='Pete Olsen III hepaestus@gmail.com https://hepaestus.com/'
 manufacturer='Olsen Design 06-2022'
-version = 'Version 1.0.8d'
+version = 'Version 1.0.10d'
 ##################################################################
 print("Starting...")
 
 import board
 import neopixel # Adafruit NeoPixels Lib
 import adafruit_pioasm
-
-# from kb import _KMKKeyboard
+from storage import getmount
 from kmk.keys import KC
 from kmk.modules.encoder import EncoderHandler
 from kmk.modules.layers import Layers
-from kmk.modules.split import Split, SplitType
+from kmk.modules.split import Split, SplitType, SplitSide
 from kmk.extensions.rgb import RGB, AnimationModes
 from kmk.kmk_keyboard import KMKKeyboard as _KMKKeyboard
-
-## Import Scanners
 from kmk.scanners import DiodeOrientation
 from kmk.scanners import intify_coordinate as ic
 from kmk.scanners.digitalio import MatrixScanner
 
-## Wiring/Build Specific Configuration
+## Wiring/Build Specific Configuration ##########################################
+#
 rgb_pixel_pin = board.D2
 split_data_pin = board.D3
 my_col_pins=[board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10]
 my_row_pins=[board.D4, board.D5, board.D6, board.D7, board.D8, board.D9]
 my_diode_orientation=DiodeOrientation.COL2ROW
+my_split_side=SplitSide.LEFT # DEFAULT TO LEFT SIDE
 neopixels_per_side = 24
-debug=True
-## End Build Config
+debugging_on=True
+#
+## End Build Config #############################################################
 
+## Figure Out Which Side I am On from the Mount Point.
+name = str(getmount('/').label)
+print('Keyboard Left Or Right: {}'.format(name))
+if name == 'RIGHT':
+     # right
+     my_split_side=SplitSide.RIGHT
+elif name == 'LEFT': 
+     # left
+     my_split_side=SplitSide.LEFT,    
+else:
+    print('ERROR: UNKNOWN DRIVE Cannot tell if right or left keyboard side')
+
+### Extensions
 rgb_ext = RGB(
     pixel_pin=rgb_pixel_pin,
     num_pixels=neopixels_per_side,
@@ -51,7 +64,9 @@ rgb_ext = RGB(
     refresh_rate=60
 )
 
+## Modules
 split_mod = Split(
+    split_side=my_split_side,   
     split_flip=True, # If both halves are the same, but flipped, set this True
     split_type=SplitType.UART,  # Defaults to UART
     uart_interval=20,  # Sets the uarts delay. Lower numbers draw more power
@@ -60,12 +75,16 @@ split_mod = Split(
     use_pio=True,  # allows for UART to be used with PIO
 )
 
+## My Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
     # create and register the scanner
     def __init__(self):      
-      # create and register the scanner      
-      self.matrix = MatrixScanner( my_row_pins, my_col_pins, my_diode_orientation )
-
+        # create and register the scanner
+      
+        # Using Global variables as any null value passed, or not setting, causes errors in digitalio.py line 17
+        #                            ROW PINS     COLUMN PINS  DIODES
+        self.matrix = MatrixScanner( my_row_pins, my_col_pins, my_diode_orientation )
+        
     def __repr__(self):
         return (
             '\n  DactylManuformKeyboard6x6( \n'
@@ -79,42 +98,48 @@ class DactylManuformKeyboard6x6(_KMKKeyboard):
             '    hid_pending = {}\n'
             '    active_layers = {}\n'
             '    timeouts = {}\n'
+            '    split = {}\n'
             '  )\n'
         ).format(
             self.debug_enabled,
             self.diode_orientation,
             self.matrix,
             self.unicode_mode,
-            self._hid_helper,
-            # internal state
+            self._hid_helper,            
             self.keys_pressed,
             self._coordkeys_pressed,
             self.hid_pending,
             self.active_layers,
             self._timeouts,
+            my_split_side,
         )
         
 keyboard = DactylManuformKeyboard6x6()
-keyboard.debug_enabled = debug
+keyboard.debug_enabled = debugging_on
+
+# NOTE: If there was not the error stated above 
+#   I would use the lines below to configure the keyboard.
 # keyboard.diode_orientation = my_diode_orientation
-# keyboard.col_pins=my_col_pins
 # keyboard.row_pins=my_row_pins
+# keyboard.col_pins=my_col_pins
+
 keyboard.modules.append(split_mod)
 keyboard.modules.append(Layers())
 keyboard.extensions.append(rgb_ext)
 
 keyboard.coord_mapping = [
-    0,  1,  2,  3,  4,  5,          47, 46, 45, 44, 43, 42,
-    6,  7,  8,  9, 10, 11,          53, 52, 51, 50, 49, 48,
-    12, 13, 14, 15, 16, 17,         59, 58, 57, 56, 55, 54,
-    18, 19, 20, 21, 22, 23,         65, 64, 63, 62, 61, 60,
-    24, 25, 26, 27, 28, 29,         71, 70, 69, 68, 67, 66,
-            30, 31, 32, 33,         75, 74, 73, 72,
-                34, 35, 36, 37, 79, 78, 77, 76,
+     0, 1,  2,  3,   4,  5,    48, 47, 46, 45, 44, 43,
+     6, 7,  8,  9,  10, 11,    54, 53, 52, 51, 50, 49,
+    12, 13, 14, 15, 16, 17,    60, 59, 58, 57, 56, 55,
+    18, 19, 20, 21, 22, 23,    66, 65, 64, 63, 62, 61,
+    24, 25, 26, 27, 28, 29,    72, 71, 70, 69, 68, 67,
+            32, 33, 34, 35,    78, 77, 76, 75,
+            39, 40, 41, 42,    84, 83, 82, 81,
 ]                                          
 
 # Cleaner key names
 XXXXXXX = KC.NO
+_______ = KC.TRNS
 UNDO = KC.LCTL(KC.Z)
 CUT = KC.LCTL(KC.X)
 COPY = KC.LCTL(KC.C)
@@ -130,33 +155,32 @@ RAISE = KC.MO(2)
 keyboard.keymap = [
     # QWERTY
     [    
-        KC.F1,  KC.F2,  KC.F3,  KC.F4,  KC.F5,  KC.F6,      KC.F7,  KC.F8,  KC.F9,  KC.F10, KC.F11, KC.F12,
-        KC.ESC, KC.N1,  KC.N2,  KC.N3,  KC.N4,  KC.N5,      KC.N6,  KC.N7,  KC.N8,  KC.N9,  KC.N0,  KC.MINS,
-        KC.TAB, KC.Q,   KC.W,   KC.E,   KC.R,   KC.T,       KC.Y,   KC.U,   KC.I,   KC.O,   KC.P,   KC.EQL,
-        KC.LSHIFT,KC.A, KC.S,   KC.D,   KC.F,   KC.G,       KC.H,   KC.J,   KC.K,   KC.L,   KC.SCLN,KC.QUOT,
-        KC.LCTL,KC.Z,   KC.X,   KC.C,   KC.V,   KC.B,       KC.N,   KC.M,   KC.COMM,KC.DOT, KC.SLSH,KC.BSLASH,
-                KC.LCBR,    KC.RCBR,    RAISE,  KC.ENT,     KC.SPC, LOWER,  KC.RGUI,    KC.RSHIFT,
-                    LOWER,  KC.SPC,     KC.TAB, KC.BSPC,    KC.DEL, KC.END, KC.DEL, KC.HOME,
+        KC.F1,  KC.F2,  KC.F3,  KC.F4,  KC.F5,  KC.F6,  KC.F7,  KC.F8,  KC.F9,  KC.F10, KC.F11, KC.F12,
+        KC.ESC, KC.N1,  KC.N2,  KC.N3,  KC.N4,  KC.N5,  KC.N6,  KC.N7,  KC.N8,  KC.N9,  KC.N0,  KC.MINS,
+        KC.TAB, KC.Q,   KC.W,   KC.E,   KC.R,   KC.T,   KC.Y,   KC.U,   KC.I,   KC.O,   KC.P,   KC.EQL,
+        KC.LSFT,KC.A,   KC.S,   KC.D,   KC.F,   KC.G,   KC.H,   KC.J,   KC.K,   KC.L,   KC.SCLN,KC.RSFT,
+        KC.LCTL,KC.Z,   KC.X,   KC.C,   KC.V,   KC.B,   KC.N,   KC.M,   KC.COMM,KC.DOT, KC.SLSH,KC.BSLASH,
+                        KC.LCBR,KC.RCBR,KC.ENT, KC.SPC, KC.SPC, KC.RGUI,KC.HOME,KC.END, 
+                        LOWER,  CUT    ,KC.TAB, KC.BSPC,KC.DEL, PASTE  ,KC.DEL, RAISE,
     ],
     # LOWER
     [       
-        KC.F1,  KC.F2,  KC.F3,  KC.F4,  KC.F5,  KC.F6,          KC.F7,  KC.F8,  KC.F9,  KC.F10, KC.F11, KC.F12,
-        KC.ESC, KC.N1,  KC.N2,  KC.N3,  KC.N4,  KC.N5,          KC.N6,  KC.N7,  KC.N8,  KC.N9,  KC.N0,  KC.MINS,
-        KC.GRV, KC.EXLM,    KC.AT,  KC.HASH,    KC.DLR,         KC.PERC,    KC.CIRC,  KC.AMPR,  KC.ASTR,KC.LPRN,    KC.RPRN,    KC.PIPE,
-        KC.RGB_TOG,KC.EQL,  KC.MINS,KC.PLUS,    KC.LCBR,        KC.RCBR,    KC.LBRC,  KC.RBRC,  KC.SCLN,KC.COLN,    KC.BSLS,    XXXXXXX,
-                XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-                    KC.TAB,  KC.BSPC,   KC.END,  KC.DEL,    KC.ENT, KC.END, KC.DEL, KC.HOME,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                          _______, _______, _______, _______, _______, _______, _______, _______,
+                          _______, _______, _______, _______, _______, _______, _______, _______,
     ],
     #RAISE
     [       
-        KC.F1,    KC.F2,    KC.F3,    KC.F4,    KC.F5,    KC.F6,        KC.F7,    KC.F8,    KC.F9,    KC.F10,   KC.F11,   KC.F12,
-        KC.ESC,   KC.N1,    KC.N2,    KC.N3,    KC.N4,    KC.N5,        KC.N6,    KC.N7,    KC.N8,    KC.N9,    KC.N0,    KC.MINS,
-        XXXXXXX,  KC.INS,   KC.PSCR,  KC.APP,   XXXXXXX,  XXXXXXX,      KC.PGUP,  BACK,     KC.UP,    NEXT,     LBSPC,    KC.BSPC,
-        XXXXXXX,  KC.LALT,  KC.LCTL,  KC.LSFT,  XXXXXXX,  KC.CAPS,      KC.PGDN,  KC.LEFT,  KC.DOWN,  KC.RGHT,  KC.DEL,   KC.PIPE,
-        XXXXXXX,  UNDO,     CUT,      COPY,     PASTE,    XXXXXXX,      XXXXXXX,  LSTRT,    XXXXXXX,  LEND,     XXXXXXX,  XXXXXXX,
-                XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-                    KC.TAB,   KC.BSPC,  KC.ENT,  KC.SPC,    KC.ENT,    KC.END,   KC.DEL,   KC.BSPC,
-    ]
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC.PSCR, KC.MUTE, KC.VOLU, KC.VOLD,
+        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                          _______, _______, _______, _______, _______, _______, _______, _______,
+                          _______, _______, _______, _______, _______, _______, _______, _______,
+    ],
 ]
 
 print("Started! Version: {}".format(version))
