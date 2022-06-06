@@ -1,7 +1,5 @@
 # Dactyl-Manuform 6x6
-<picture style="margin: auto; ">
-  <img src="images/dactyl_manuform_6x6_keyboard-small.jpg"/>
-</picture>
+![dactyle manuform 6x6 keyboard](images/dactyl_manuform_6x6_keyboard-small.jpg)
 
 Translucent Red DM6x6 keyboard with NeoPixels backlights. (Better pic of the LEDs coming soon)
 
