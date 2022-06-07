@@ -19,12 +19,11 @@ Mainly Finished Circa: 2022-06-06 :)
 - [ ] Hone the layout to my needs
 - [ ] Use this keyboard regualrly as my daily driver
 
-
-Project Coding Discussion
-* [Discord Server](https://discord.gg/VtqKRwuec4)
-
+## Get Some Help Here
+Login to discord and get some help with your build.
+* Project Coding Discussion
+  * [Discord Server](https://discord.gg/VtqKRwuec4)
 ## The Build
-  
 ### Images
 
 ![left hand side printed](images/left_hand_side_printed-small.jpg)
@@ -37,7 +36,13 @@ Project Coding Discussion
 
 ![final install guts](images/final_install_guts-small.jpg)
 
+### Wiring Diagram
+I don't have a full diagram right now I went a little rogue and extrapolated from a DM6x5 diagram for a pro micro.
+<p width="60%"><img src="https://arnmk.com/content/images/2020/09/Wiring-Diagram-1.svg"/></p>
 
+* [Similar Diagram for a DM-6x7](https://geekhack.org/index.php?action=dlattach;topic=88576.0;attach=278458;image)
+* [KB2040](https://learn.adafruit.com/assets/106984) Pinouts
+  * See the "Your Unique Build Section" for the pinout used in this build.
 ## Parts
 ### Baseplate 3d Printed
 * [Dactyl Manuform 6x6](https://thangs.com/designer/hepaestus/3d-model/Dactyl%20Manuform%206x6-75667)
@@ -58,8 +63,10 @@ Project Coding Discussion
   * This made making changes **much** easier than unsoldering and resoldering.
 
 ## Code
-
+Please be aware that code changes faster than the documentation always check the latest code! 
+That said Here are some important code snippets. 
 ### The Custom Keyboard Class
+In this section I create a new Keyboard based on the existing KMKKeyboard object.  I do this to offer slightly more robust, easier to read, keyboard debugging output. I suggest you also overwrite or update the Matrix Scanner `__repr__` method with better debugging output as well.
 ```python
 ## My Custom Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
@@ -103,8 +110,10 @@ keyboard = DactylManuformKeyboard6x6()
 ```
 
 ### Your Unique Build
-
 Notice this section of the code where the datapins are recorded. You need to specify the CircuitPython names for each cpin.
+
+![KB2040 Pinouts](https://cdn-learn.adafruit.com/assets/assets/000/106/984/medium640/adafruit_products_Adafruit_KB2040_Pinout.png)
+
 ```python
 ## Wiring/Build Specific Configuration ##########################################
 #
@@ -197,6 +206,8 @@ rgb_ext = RGB(
 )
 ```
 ### Modules
+
+#### Split Module
 Split Keyboard Module Params
 ```python
 split_mod = Split(
@@ -209,8 +220,7 @@ split_mod = Split(
     use_pio=True,  # allows for UART to be used with PIO
 )
 ```
-
-### Keyboard Left and Right Side Definitions
+#### Keyboard Left and Right Side Definitions
 When your CIRCUITPYTHON Drive is loaded. Goto the properties for the drive and change the Name of the drive to LEFT.
 Now plug in the right side of your keyboard and do the same on the CIRCUITPYHTON drive except this time name it RIGHT.
 
