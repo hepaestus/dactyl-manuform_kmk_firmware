@@ -27,6 +27,7 @@ Login to discord and get some help with your build.
 ### Images
 
 ![left hand side printed](images/left_hand_side_printed-small.jpg)
+
 ![installing switches](images/installing_switches-small.jpg)
 
 ![buttons with dioeds installed](images/buttons_with_diodes_installed-small.jpg)
