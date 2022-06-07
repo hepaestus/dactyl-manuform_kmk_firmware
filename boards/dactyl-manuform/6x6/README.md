@@ -27,7 +27,6 @@ Login to discord and get some help with your build.
 ### Images
 
 ![left hand side printed](images/left_hand_side_printed-small.jpg)
-
 ![installing switches](images/installing_switches-small.jpg)
 
 ![buttons with dioeds installed](images/buttons_with_diodes_installed-small.jpg)
@@ -65,8 +64,13 @@ I don't have a full diagram right now I went a little rogue and extrapolated fro
 ## Code
 Please be aware that code changes faster than the documentation always check the latest code! 
 That said Here are some important code snippets. 
+
+### Notes About Code
+You do **NOT** need to use the `make` command to build your keyboard. You only need to create a single file, `main.py` with all your code. Copy your file and the /kmk  directory from the [KMKfw/KMK_Firmware](https://github.com/KMKfw/kmk_firmware) respoistory to your root microcontroller directory. You CAN seperate your concerns into different files and include them into code, if you are python savvy. Its not required. See the [Adafruit Circuit Python Tutorial](https://learn.adafruit.com/welcome-to-circuitpython/) if you need some python help.
+
 ### The Custom Keyboard Class
 In this section I create a new Keyboard based on the existing KMKKeyboard object.  I do this to offer slightly more robust, easier to read, keyboard debugging output. I suggest you also overwrite or update the Matrix Scanner `__repr__` method with better debugging output as well.
+
 ```python
 ## My Custom Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
@@ -130,9 +134,7 @@ debugging_on=True
 ```
 
 ### Coord_Mapping
-
-To figure out your coord_mapping multiply the number of cols and rows on each side of your keyboard or in your sinlge keboard matrix. For example I have 6 cols and 7. Multiply the cols and rows rto get the total number of connections possible per side 6x7 = 42. Each side has 42 posible keys. We are not using all the keys so you have to remove the key numbers you are not using from the matrix. 
-Notice below the two sides MIRROR each other and that some numbers are skipped.
+To figure out your coord_mapping multiply the number of cols and rows on each side of your keyboard, or on your single keyboard matrix. For example I have 6 cols and 7 rows. Multiply the cols and rows together to get the total number of connections possible per side, 6x7 = 42. Each side has 42 posible keys. We are not using all the keys so you have to remove the key numbers you are not using from the matrix. Notice below the two sides MIRROR each other and that some numbers are skipped since those keys are not in use.
 
 ```python
 keyboard.coord_mapping = [
@@ -206,7 +208,6 @@ rgb_ext = RGB(
 )
 ```
 ### Modules
-
 #### Split Module
 Split Keyboard Module Params
 ```python
@@ -224,7 +225,7 @@ split_mod = Split(
 When your CIRCUITPYTHON Drive is loaded. Goto the properties for the drive and change the Name of the drive to LEFT.
 Now plug in the right side of your keyboard and do the same on the CIRCUITPYHTON drive except this time name it RIGHT.
 
-Now the code below will load the correct SplitSide to the Split Module
+Now the code below will load the correct SplitSide to the Split Module.
 ```python
 ## Figure Out Which Side I am On from the Mount Point.
 name = str(getmount('/').label)
