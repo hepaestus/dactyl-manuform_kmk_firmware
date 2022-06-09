@@ -137,6 +137,7 @@ debugging_on=True
 ### Coord_Mapping
 To figure out your coord_mapping multiply the number of cols and rows on each side of your keyboard, or on your single keyboard matrix. For example I have 6 cols and 7 rows. Multiply the cols and rows together to get the total number of connections possible per side, 6x7 = 42. Each side has 42 posible keys. We are not using all the keys so you have to remove the key numbers you are not using from the matrix. Notice below the two sides MIRROR each other and that some numbers are skipped since those keys are not in use.
 
+[latest code here](https://github.com/hepaestus/dactyl-manuform_kmk_firmware/blob/debc6196d9aea11457f8f0770b22a8d03cbec44e/boards/dactyl-manuform/6x6/main.py#L135)
 ```python
 keyboard.coord_mapping = [
      0, 1,  2,  3,   4,  5,    48, 47, 46, 45, 44, 43,
