@@ -72,6 +72,7 @@ You do **NOT** need to use the `make` command to build your keyboard. You only n
 ### The Custom Keyboard Class
 In this section I create a new Keyboard based on the existing KMKKeyboard object.  I do this to offer slightly more robust, easier to read, keyboard debugging output. I suggest you also overwrite or update the Matrix Scanner `__repr__` method with better debugging output as well.
 
+[latest code here](https://github.com/hepaestus/dactyl-manuform_kmk_firmware/blob/debc6196d9aea11457f8f0770b22a8d03cbec44e/boards/dactyl-manuform/6x6/main.py#L80)
 ```python
 ## My Custom Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
