@@ -67,7 +67,7 @@ Please be aware that code changes faster than the documentation always check the
 That said Here are some important code snippets. 
 
 ### Notes About Code
-You do **NOT** need to use the `make` command to build your keyboard. You only need to create a single file, `main.py` with all your code. Copy your file and the /kmk  directory from the [KMKfw/KMK_Firmware](https://github.com/KMKfw/kmk_firmware) respoistory to your root microcontroller directory. You CAN seperate your concerns into different files and include them into code, if you are python savvy. Its not required. See the [Adafruit Circuit Python Tutorial](https://learn.adafruit.com/welcome-to-circuitpython/) if you need some python help.
+You do **NOT** need to use the `make` command to build your keyboard. You only need to create a single file, `main.py` with all your code. Copy your file and the /kmk  directory from the [KMKfw/KMK_Firmware](https://github.com/KMKfw/kmk_firmware) respository to the root of micro-controller directory. You *CAN* seperate your concerns into different files and include them into code, if you are python savvy. Its not required. See the [Adafruit Circuit Python Tutorial](https://learn.adafruit.com/welcome-to-circuitpython/) if you need some python help.
 
 ### The Custom Keyboard Class
 In this section I create a new Keyboard based on the existing KMKKeyboard object.  I do this to offer slightly more robust, easier to read, keyboard debugging output. I suggest you also overwrite or update the Matrix Scanner `__repr__` method with better debugging output as well.
@@ -140,15 +140,17 @@ To figure out your coord_mapping multiply the number of cols and rows on each si
 
 [latest code here](https://github.com/hepaestus/dactyl-manuform_kmk_firmware/blob/debc6196d9aea11457f8f0770b22a8d03cbec44e/boards/dactyl-manuform/6x6/main.py#L135)
 ```python
-keyboard.coord_mapping = [
-     0, 1,  2,  3,   4,  5,    48, 47, 46, 45, 44, 43,
-     6, 7,  8,  9,  10, 11,    54, 53, 52, 51, 50, 49,
-    12, 13, 14, 15, 16, 17,    60, 59, 58, 57, 56, 55,
-    18, 19, 20, 21, 22, 23,    66, 65, 64, 63, 62, 61,
-    24, 25, 26, 27, 28, 29,    72, 71, 70, 69, 68, 67,
-            32, 33, 34, 35,    78, 77, 76, 75,
-            39, 40, 41, 42,    84, 83, 82, 81,
-]    
+                                                       # A truer representation of the physical layout of the 3d printed board
+                                                       # The wiring makes the keymap layout possible with a 6x7(-4) on each side
+keyboard.coord_mapping = [                             #   
+     0, 1,  2,  3,   4,  5,    47, 46, 45, 44, 43, 42, #   0  1  2  3  4  5        47 46 45  x 43 42
+     6, 7,  8,  9,  10, 11,    53, 52, 51, 50, 49, 48, #   6  7  8  9 10 11        53 52 51 50 49  x
+    12, 13, 14, 15, 16, 17,    59, 58, 57, 56, 55, 54, #  12 13 14 15 16 17        59 58 57 56 55 54
+    18, 19, 20, 21, 22, 23,    65, 64, 63, 62, 61, 60, #  18 19 20 21 22 23        65 64 63 62 61 60
+    24, 25, 26, 27, 28, 29,    71, 70, 69, 68, 67, 66, #  24 25 26 27 28 29        71 70 69 68 67 66
+            32, 33, 34, 35,    77, 76, 75, 74,         #        32 33 34 35        77 76 75 74
+            38, 39, 40, 41,    83, 82, 81, 80,         #               40 41      83 82
+]                                                      #                39 38    81 80  
 ```
 
 ### Keymaps and Layers
@@ -158,31 +160,31 @@ Below is a very simple 3 layer keymap for the 6x6.
 keyboard.keymap = [
     # QWERTY
     [    
-        KC.F1,   KC.F2,  KC.F3,   KC.F4,   KC.F5,   KC.F6,        KC.F7,  KC.F8,   KC.F9,   KC.F10,  KC.F11,  KC.F12,
-        KC.ESC,  KC.N1,  KC.N2,   KC.N3,   KC.N4,   KC.N5,        KC.N6,  KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.MINS,
-        KC.TAB,  KC.Q,   KC.W,    KC.E,    KC.R,    KC.T,         KC.Y,   KC.U,    KC.I,    KC.O,    KC.P,    KC.EQL,
-        KC.LSFT, KC.A,   KC.S,    KC.D,    KC.F,    KC.G,         KC.H,   KC.J,    KC.K,    KC.L,    KC.SCLN, KC.RSFT,
-        KC.LCTL, KC.Z,   KC.X,    KC.C,    KC.V,    KC.B,         KC.N,   KC.M,    KC.COMM, KC.DOT,  KC.SLSH, KC.BSLASH,
-                         KC.LCBR, KC.RCBR, KC.ENT,  KC.SPC,       KC.SPC, KC.RGUI, KC.HOME, KC.END, 
-                         LOWER,   CUT    , KC.TAB,  KC.BSPC,      KC.DEL, PASTE  , KC.DEL,  RAISE,
+        KC.F1,  KC.F2,  KC.F3,  KC.F4,  KC.F5,  KC.F6,       KC.F7,  KC.F8,  KC.F9,  KC.F10, KC.F11, KC.F12,
+        KC.ESC, KC.N1,  KC.N2,  KC.N3,  KC.N4,  KC.N5,       KC.N6,  KC.N7,  KC.N8,  KC.N9,  KC.N0,  KC.MINUS,
+        KC.TAB, KC.Q,   KC.W,   KC.E,   KC.R,   KC.T,        KC.Y,   KC.U,   KC.I,   KC.O,   KC.P,   KC.EQUAL,
+        KC.LSFT,KC.A,   KC.S,   KC.D,   KC.F,   KC.G,        KC.H,   KC.J,   KC.K,   KC.L,   KC.SCLN,KC.QUOTE,
+        KC.LCTL,KC.Z,   KC.X,   KC.C,   KC.V,   KC.B,        KC.N,   KC.M,   KC.COMM,KC.DOT, KC.SLSH,KC.BSLASH,
+                        KC.LBRC,KC.RBRC,KC.SPC, LOWER,       RAISE,  KC.SPC, CUT,    PASTE,
+                        KC.GRV, KC.ENT ,KC.BSPC,KC.DEL,      KC.DEL, KC.BSPC,KC.ENT ,KC.SPC,
     ],
     # LOWER
-    [       
-        _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______,
-        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                          _______, _______, _______, _______,     _______, _______, _______, _______,
-                          _______, _______, _______, _______,     _______, _______, _______, _______,
-    ],
+    [           
+        _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______,
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                          RGBKNT,  RGBTOG,  KC.RGB_HUD,_______,  _______, KC.RGB_HUI,RGBTOG,RGBKNT, 
+                          RGBSWL,  RGBBOW, _______,  _______,    _______, _______, RGBBOW,  RGBSWL,
+    ],    
     #RAISE
     [       
-        _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______,
-        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC.PSCR, KC.MUTE, KC.VOLU, KC.VOLD,
-        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                          _______, _______, _______, _______,     _______, _______, _______, _______,
-                          _______, _______, _______, _______,     _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, KC.PSCR, KC.MUTE, KC.VOLU, KC.VOLD,
+        _______, XXXXXXX, KC.PGUP, KC.UP,   KC.PGDN, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, XXXXXXX, KC.LEFT, KC.DOWN, KC.RGHT, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                          _______, _______, _______, _______,   _______, _______, _______, _______,
+                          _______, _______, _______, _______,   _______, _______, _______, _______,
     ],
 ]
 ```
