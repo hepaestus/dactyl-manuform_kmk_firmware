@@ -1,6 +1,6 @@
 ##################################################################
-author='Pete Olsen III hepaestus@gmail.com https://hepaestus.com/'
-manufacturer='Olsen Design 06-2022'
+author = 'Pete Olsen III hepaestus@gmail.com https://hepaestus.com/'
+manufacturer = 'Olsen Design 06-2022'
 version = 'Version 1.0.16.keys'
 ##################################################################
 print("Starting...")
@@ -8,6 +8,7 @@ print("Starting...")
 import board
 import neopixel # Adafruit NeoPixels Lib
 import adafruit_pioasm
+# import key_names
 from storage import getmount
 from kmk.keys import KC
 from kmk.modules.encoder import EncoderHandler
@@ -19,32 +20,32 @@ from kmk.scanners import DiodeOrientation
 from kmk.scanners import intify_coordinate as ic
 from kmk.scanners.digitalio import MatrixScanner
 
-## Wiring/Build Specific Configuration ##########################################
+# Wiring/Build Specific Configuration ##########################################
 #
 my_rgb_pixel_pin = board.D2
 my_split_data_pin = board.D3
-my_col_pins=[board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10]
-my_row_pins=[board.D4, board.D5, board.D6, board.D7, board.D8, board.D9]
+my_col_pins = [board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10]
+my_row_pins = [board.D4, board.D5, board.D6, board.D7, board.D8, board.D9]
 my_diode_orientation = DiodeOrientation.COL2ROW
-my_split_side = SplitSide.LEFT # DEFAULT TO LEFT SIDE
+my_split_side = SplitSide.LEFT  # DEFAULT TO LEFT SIDE
 neopixels_per_side = 24
 debugging_on = True
 #
-## End Build Config #############################################################
+# End Build Config ###########################################################
 
-## Figure Out Which Side I am On from the Mount Point.
+# Figure Out Which Side I am On from the Mount Point.
 name = str(getmount('/').label)
 print('Keyboard Left Or Right: {}'.format(name))
 if name == 'RIGHT':
-     # right
-     my_split_side=SplitSide.RIGHT
-elif name == 'LEFT': 
-     # left
-     my_split_side=SplitSide.LEFT,    
+    # right
+    my_split_side = SplitSide.RIGHT
+elif name == 'LEFT':
+    # left
+    my_split_side = SplitSide.LEFT,
 else:
     print('ERROR: UNKNOWN DRIVE Cannot tell if right or left keyboard side. Default to LEFT')
 
-### Extensions
+# ## Extensions
 rgb_ext = RGB(
     pixel_pin=my_rgb_pixel_pin,
     num_pixels = neopixels_per_side*2,
@@ -55,7 +56,7 @@ rgb_ext = RGB(
     val_default = 64,
     hue_step = 16,
     sat_step = 16,
-    val_step =1 6,
+    val_step = 16,
     animation_speed = 3,
     breathe_center = 2,  # 1.0-2.7
     knight_effect_length = 4,
@@ -64,7 +65,7 @@ rgb_ext = RGB(
     refresh_rate = 60
 )
 
-## Modules
+#  Modules
 split_mod = Split(
     split_side = my_split_side,   
     split_flip = True, # If both halves are the same, but flipped, set this True
@@ -75,16 +76,17 @@ split_mod = Split(
     use_pio = True,  # allows for UART to be used with PIO
 )
 
-## My Keyboard Class
+# My Keyboard Class
 class DactylManuformKeyboard6x6(_KMKKeyboard):
     # create and register the scanner
-    def __init__(self):      
+    def __init__(self):
         # create and register the scanner
-      
-        # Using Global variables as any null value passed, or not setting, causes errors in digitalio.py line 17
+
+        # Using Global variables as any null value passed, or not setting, 
+        # causes errors in digitalio.py line 17
         #                            ROW PINS     COLUMN PINS  DIODES
-        self.matrix = MatrixScanner( my_row_pins, my_col_pins, my_diode_orientation )
-        
+        self.matrix = MatrixScanner(my_row_pins, my_col_pins, my_diode_orientation)
+
     def __repr__(self):
         return (
             '\n  DactylManuformKeyboard6x6( \n'
@@ -105,7 +107,7 @@ class DactylManuformKeyboard6x6(_KMKKeyboard):
             self.diode_orientation,
             self.matrix,
             self.unicode_mode,
-            self._hid_helper,            
+            self._hid_helper,
             self.keys_pressed,
             self._coordkeys_pressed,
             self.hid_pending,
@@ -113,24 +115,23 @@ class DactylManuformKeyboard6x6(_KMKKeyboard):
             self._timeouts,
             my_split_side,
         )
-        
+
 keyboard = DactylManuformKeyboard6x6()
 keyboard.debug_enabled = debugging_on
 
-# NOTE: If there was not the error stated above 
+# NOTE: If there was not the error stated above
 #   I would use the lines below to configure the keyboard.
 # keyboard.diode_orientation = my_diode_orientation
 # keyboard.row_pins=my_row_pins
 # keyboard.col_pins=my_col_pins
 
 keyboard.pixel_pin = my_rgb_pixel_pin
-keyboard.num_pixels = neopixels_per_side*2
+keyboard.num_pixels = neopixels_per_side
 
 keyboard.modules.append(split_mod)
 keyboard.modules.append(Layers())
 keyboard.extensions.append(rgb_ext)
 
-#### KEY Definitions
 XXXXXXX = KC.NO
 _______ = KC.TRNS
 UNDO = KC.LCTL(KC.Z)
@@ -144,8 +145,8 @@ NEXT = KC.LALT(KC.RGHT)
 LBSPC = KC.LCTL(KC.BSPC)
 LOWER = KC.MO(1)
 RAISE = KC.MO(2)
-RGBTOG = KC.RGB_TOG # Toggle 
 RGBSWL = KC.RGB_MODE_SWIRL
+RGBTOG = KC.RGB_TOG
 RGBBRH = KC.RGB_MODE_BREATHE
 RGBBOW = KC.RGB_MODE_RAINBOW
 RGBBBW = KC.RGB_MODE_BREATHE_RAINBOW
@@ -158,7 +159,6 @@ RGBSAI = KC.RGB_SAI # Increase Saturation
 RGBSAD = KC.RGB_SAD # Decrease Saturation
 RGBVAI = KC.RGB_VAI # Increase Value
 RGBVAD = KC.RGB_VAD # Decrease Value
-
 
                                                        # A truer representation of the physical layout of the 3d printed board
                                                        # The wiring makes the keymap layout possible with a 6x7(-4) on each side
