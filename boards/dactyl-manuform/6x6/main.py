@@ -160,17 +160,17 @@ RGBSAD = KC.RGB_SAD # Decrease Saturation
 RGBVAI = KC.RGB_VAI # Increase Value
 RGBVAD = KC.RGB_VAD # Decrease Value
 
-                                                       # A truer representation of the physical layout of the 3d printed board
-                                                       # The wiring makes the keymap layout possible with a 6x7(-4) on each side
-keyboard.coord_mapping = [                             #   
-     0, 1,  2,  3,   4,  5,    47, 46, 45, 44, 43, 42, #   0  1  2  3  4  5        47 46 45  x 43 42
-     6, 7,  8,  9,  10, 11,    53, 52, 51, 50, 49, 48, #   6  7  8  9 10 11        53 52 51 50 49  x
-    12, 13, 14, 15, 16, 17,    59, 58, 57, 56, 55, 54, #  12 13 14 15 16 17        59 58 57 56 55 54
-    18, 19, 20, 21, 22, 23,    65, 64, 63, 62, 61, 60, #  18 19 20 21 22 23        65 64 63 62 61 60
-    24, 25, 26, 27, 28, 29,    71, 70, 69, 68, 67, 66, #  24 25 26 27 28 29        71 70 69 68 67 66
-            32, 33, 34, 35,    77, 76, 75, 74,         #        32 33 34 35        77 76 75 74
-            38, 39, 40, 41,    83, 82, 81, 80,         #               40 41      83 82
-]                                                      #                39 38    81 80
+                                                        #  A truer representation of the physical layout of the 3d printed board
+                                                        #  The wiring makes the keymap layout possible with a 6x7(-4) on each side
+keyboard.coord_mapping = [                              #   
+     0, 1,  2,  3,   4,  5,    47, 46, 45, 44, 43, 42,  #    0  1  2  3  4  5        47 46 45  x 43 42
+     6, 7,  8,  9,  10, 11,    53, 52, 51, 50, 49, 48,  #    6  7  8  9 10 11        53 52 51 50 49  x
+    12, 13, 14, 15, 16, 17,    59, 58, 57, 56, 55, 54,  #   12 13 14 15 16 17        59 58 57 56 55 54
+    18, 19, 20, 21, 22, 23,    65, 64, 63, 62, 61, 60,  #   18 19 20 21 22 23        65 64 63 62 61 60
+    24, 25, 26, 27, 28, 29,    71, 70, 69, 68, 67, 66,  #   24 25 26 27 28 29        71 70 69 68 67 66
+            32, 33, 34, 35,    77, 76, 75, 74,          #         32 33 34 35        77 76 75 74
+            38, 39, 40, 41,    83, 82, 81, 80,          #                40 41      83 82
+]                                                       #                 39 38    81 80
 
 keyboard.keymap = [
     # QWERTY
