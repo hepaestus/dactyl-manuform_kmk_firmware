@@ -1,4 +1,4 @@
-# Dactyl-Manuform 6x6
+# Dactyl-Manuform 6x6 (6x7-4)
 ![dactyle manuform 6x6 keyboard](images/dactyl_manuform_6x6_keyboard-small.jpg)
 
 Translucent Red DM6x6 keyboard with NeoPixels backlights. (Better pic of the LEDs coming soon)
@@ -9,11 +9,11 @@ Mainly Finished Circa: 2022-06-06 :)
 - [x] Get all other parts together
 - [x] Assemble the keyboard
 - [x] Programm the keyboard
-- [ ] Debug the Keyboard ( Current Status Debugging: 2022-06-06 :) )
+- [x] Debug the Keyboard ( Current Status Debugging: 2022-06-06 :) )
 - [ ] Finish Base Assembly
-- [ ] Fix the program
+- [x] Fix the program
 - [ ] Add Special Features
-- [ ] Get RGB Leds working
+- [x] Get RGB Leds working
 - [ ] Rewire and Glue NeoPixels onto the backs of the switches
 - [ ] Learn to type on this new layout
 - [ ] Hone the layout to my needs
@@ -125,12 +125,12 @@ Notice this section of the code where the datapins are recorded. You need to spe
 #
 rgb_pixel_pin = board.D2
 split_data_pin = board.D3
-my_col_pins=[board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10]
-my_row_pins=[board.D4, board.D5, board.D6, board.D7, board.D8, board.D9]
-my_diode_orientation=DiodeOrientation.COL2ROW
-my_split_side=SplitSide.LEFT # DEFAULT TO LEFT SIDE
+my_col_pins = [board.A2, board.A1, board.A0, board.SCK, board.MISO, board.MOSI, board.D10]
+my_row_pins = [board.D4, board.D5, board.D6, board.D7, board.D8, board.D9]
+my_diode_orientation = DiodeOrientation.COL2ROW
+my_split_side = SplitSide.LEFT # DEFAULT TO LEFT SIDE
 neopixels_per_side = 24
-debugging_on=True
+debugging_on = True
 #
 ## End Build Config #############################################################
 ```
@@ -140,17 +140,17 @@ To figure out your coord_mapping multiply the number of cols and rows on each si
 
 [latest code here](https://github.com/hepaestus/dactyl-manuform_kmk_firmware/blob/debc6196d9aea11457f8f0770b22a8d03cbec44e/boards/dactyl-manuform/6x6/main.py#L135)
 ```python
-                                                       # A truer representation of the physical layout of the 3d printed board
-                                                       # The wiring makes the keymap layout possible with a 6x7(-4) on each side
-keyboard.coord_mapping = [                             #   
-     0, 1,  2,  3,   4,  5,    47, 46, 45, 44, 43, 42, #   0  1  2  3  4  5        47 46 45  x 43 42
-     6, 7,  8,  9,  10, 11,    53, 52, 51, 50, 49, 48, #   6  7  8  9 10 11        53 52 51 50 49  x
-    12, 13, 14, 15, 16, 17,    59, 58, 57, 56, 55, 54, #  12 13 14 15 16 17        59 58 57 56 55 54
-    18, 19, 20, 21, 22, 23,    65, 64, 63, 62, 61, 60, #  18 19 20 21 22 23        65 64 63 62 61 60
-    24, 25, 26, 27, 28, 29,    71, 70, 69, 68, 67, 66, #  24 25 26 27 28 29        71 70 69 68 67 66
-            32, 33, 34, 35,    77, 76, 75, 74,         #        32 33 34 35        77 76 75 74
-            38, 39, 40, 41,    83, 82, 81, 80,         #               40 41      83 82
-]                                                      #                39 38    81 80  
+                                                        #   A truer representation of the physical layout of the 3d printed board
+                                                        #   The wiring makes the keymap layout possible with a 6x7(-4) on each side
+keyboard.coord_mapping = [                              #   
+     0, 1,  2,  3,   4,  5,    47, 46, 45, 44, 43, 42,  #    0  1  2  3  4  5        47 46 45 44 43 42
+     6, 7,  8,  9,  10, 11,    53, 52, 51, 50, 49, 48,  #    6  7  8  9 10 11        53 52 51 50 49 48
+    12, 13, 14, 15, 16, 17,    59, 58, 57, 56, 55, 54,  #   12 13 14 15 16 17        59 58 57 56 55 54
+    18, 19, 20, 21, 22, 23,    65, 64, 63, 62, 61, 60,  #   18 19 20 21 22 23        65 64 63 62 61 60
+    24, 25, 26, 27, 28, 29,    71, 70, 69, 68, 67, 66,  #   24 25 26 27 28 29        71 70 69 68 67 66
+            32, 33, 34, 35,    77, 76, 75, 74,          #         32 33 34 35        77 76 75 74
+            38, 39, 40, 41,    83, 82, 81, 80,          #                40 41      83 82
+]                                                       #                 39 38    81 80  
 ```
 
 ### Keymaps and Layers
@@ -207,7 +207,7 @@ rgb_ext = RGB(
     animation_speed=1,
     breathe_center=1,  # 1.0-2.7
     knight_effect_length=3,
-    animation_mode=AnimationModes.STATIC,
+    # animation_mode=AnimationModes.STATIC,
     reverse_animation=False,
     refresh_rate=60
 )
@@ -222,7 +222,7 @@ split_mod = Split(
     split_type=SplitType.UART,  # Defaults to UART
     uart_interval=20,  # Sets the uarts delay. Lower numbers draw more power
     data_pin=split_data_pin,  # The primary data pin to talk to the secondary device
-    #data_pin2=split_data_pin,  # Second uart pin to allow 2 way communication
+    # data_pin2=split_data_pin,  # Second uart pin to allow 2 way communication
     use_pio=True,  # allows for UART to be used with PIO
 )
 ```
@@ -232,16 +232,16 @@ Now plug in the right side of your keyboard and do the same on the CIRCUITPYHTON
 
 Now the code below will load the correct SplitSide to the Split Module.
 ```python
-## Figure Out Which Side I am On from the Mount Point.
+# Figure Out Which Side I am On from the Mount Point.
 name = str(getmount('/').label)
 print('Keyboard Left Or Right: {}'.format(name))
 if name == 'RIGHT':
-     # right
-     my_split_side=SplitSide.RIGHT
-elif name == 'LEFT': 
-     # left
-     my_split_side=SplitSide.LEFT,    
+    # right
+    my_split_side = SplitSide.RIGHT
+elif name == 'LEFT':
+    # left
+    my_split_side = SplitSide.LEFT,
 else:
-    print('ERROR: UNKNOWN DRIVE Cannot tell if right or left keyboard side')
+    print('ERROR: UNKNOWN DRIVE Cannot tell if right or left keyboard side. Default to LEFT')
 ```
 
